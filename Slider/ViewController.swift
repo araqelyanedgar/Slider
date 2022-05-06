@@ -27,25 +27,28 @@ class ViewController: UIViewController {
             self,
             action: #selector(self.sizeSliderValueDidChange(_:)),
             for: .valueChanged)
+        
         redColorSlider.slider.addTarget(
             self,
             action: #selector(colorSliderValueDidChange(_:)),
             for: .valueChanged)
+        
         greenColorSlider.slider.addTarget(
             self,
             action: #selector(colorSliderValueDidChange(_:)),
             for: .valueChanged)
+        
         blueColorSlider.slider.addTarget(
             self,
             action: #selector(colorSliderValueDidChange(_:)),
             for: .valueChanged)
     }
     
-    @objc func sizeSliderValueDidChange(_ sender:UISlider!) {
+    @objc func sizeSliderValueDidChange(_ sender:UISlider) {
         textLabel.font = .systemFont(ofSize: CGFloat(sizeSlider.slider.value))
     }
     
-    @objc func colorSliderValueDidChange(_ sender:UISlider!) {
+    @objc func colorSliderValueDidChange(_ sender:UISlider) {
         textLabel.textColor = UIColor(
             red: CGFloat(redColorSlider.slider.value),
             green: CGFloat(greenColorSlider.slider.value),
@@ -58,18 +61,18 @@ class ViewController: UIViewController {
 extension ViewController {
     fileprivate func initSlideViews() {
         sizeSlider = SliderView()
-        sizeSlider.set(text: "Font Size", color: .systemGray)
+        sizeSlider.set(text: "Font Scale:", color: .systemGray)
         sizeSlider.slider.minimumValue = 20
-        sizeSlider.slider.maximumValue = 80
+        sizeSlider.slider.maximumValue = 120
         
         redColorSlider = SliderView()
-        redColorSlider.set(text: "Red", color: .systemRed)
+        redColorSlider.set(text: "Red:", color: .systemRed)
         
         greenColorSlider = SliderView()
-        greenColorSlider.set(text: "Green", color: .systemGreen)
+        greenColorSlider.set(text: "Green:", color: .systemGreen)
         
         blueColorSlider = SliderView()
-        blueColorSlider.set(text: "Blue", color: .systemBlue)
+        blueColorSlider.set(text: "Blue:", color: .systemBlue)
     }
     
     fileprivate func initTextLabel() {
