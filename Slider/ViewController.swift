@@ -14,12 +14,14 @@ class ViewController: UIViewController {
     var redColorSlider: SliderView!
     var greenColorSlider: SliderView!
     var blueColorSlider: SliderView!
+    var segmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initTextLabel()
         initVerticalStackView()
         initSlideViews()
+        initSegmentedControl()
         addViews()
         activateConstraints()
         
@@ -42,10 +44,15 @@ class ViewController: UIViewController {
             self,
             action: #selector(colorSliderValueDidChange(_:)),
             for: .valueChanged)
+        
+        segmentedControl.addTarget(
+            self,
+            action: #selector(segmentedValueChanged),
+            for: .valueChanged)
     }
     
     @objc func sizeSliderValueDidChange(_ sender:UISlider) {
-        textLabel.font = .systemFont(ofSize: CGFloat(sizeSlider.slider.value))
+        textLabel.font = textLabel.font.withSize(CGFloat((sizeSlider.slider.value)))
     }
     
     @objc func colorSliderValueDidChange(_ sender:UISlider) {
@@ -55,6 +62,19 @@ class ViewController: UIViewController {
             blue: CGFloat(blueColorSlider.slider.value),
             alpha: 1
         )
+    }
+    
+    @objc func segmentedValueChanged(_ sender:UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+            case 0:
+                textLabel.font = .italicSystemFont(ofSize: CGFloat(sizeSlider.slider.value))
+            case 1:
+                textLabel.font = .systemFont(ofSize: CGFloat(sizeSlider.slider.value))
+            case 2:
+                textLabel.font = .boldSystemFont(ofSize: CGFloat(sizeSlider.slider.value))
+            default:
+                textLabel.font = .boldSystemFont(ofSize: CGFloat(sizeSlider.slider.value))
+        }
     }
 }
 
@@ -90,9 +110,18 @@ extension ViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
     }
     
+    fileprivate func initSegmentedControl() {
+        segmentedControl = UISegmentedControl (items: ["Italic","Normal","Bold"])
+        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.tintColor = UIColor.yellow
+        segmentedControl.backgroundColor = UIColor.white
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
     fileprivate func addViews() {
         view.addSubview(textLabel)
         view.addSubview(stackView)
+        view.addSubview(segmentedControl)
         stackView.addArrangedSubview(sizeSlider)
         stackView.addArrangedSubview(redColorSlider)
         stackView.addArrangedSubview(greenColorSlider)
@@ -102,10 +131,14 @@ extension ViewController {
     fileprivate func activateConstraints() {
         NSLayoutConstraint.activate([
             textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            textLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
+            textLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
             
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            segmentedControl.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 50)
         ])
     }
+    
 }
